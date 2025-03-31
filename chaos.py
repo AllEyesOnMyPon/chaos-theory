@@ -10,8 +10,16 @@ for counter in range(1, n + 1): # Iterate from 1 to n
     xn = r * x_value_list[counter - 1][1] * (1 - x_value_list[counter - 1][1]) # Calculate the next x value using the logistic map formula
     x_value_list[counter] = (counter, xn) # Store the iteration number and the x value in the list
 
-print(x_value_list)
+iterations = [item[0] for item in x_value_list] # Extract the iteration numbers from the list
+x_values = [item[1] for item in x_value_list] # Extract the x values from the list
+plt.plot(iterations, x_values, label="Trajektoria") # Plot the x values against the iterations
 
+plt.title("Chaotic behavior of the logistic map") # Set the title of the plot
+plt.xlabel("Iteration") # Set the x-axis label
+plt.ylabel("x") # Set the y-axis label
+plt.legend() # Show the legend for the plot
+plt.grid() # Show the grid on the plot
+plt.show() # Display the plot
 
 
 
