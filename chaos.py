@@ -1,25 +1,35 @@
 import matplotlib.pyplot as plt # Import the matplotlib library for plotting
-# xn+1​\=r⋅xn​⋅(1−xn​)  
-# This is a simple implementation of the logistic map in Python.
-r = float(input("r = ")) # r is the growth rate parameter for the logistic map
-n = int(input("n = ")) # n is the number of iterations to perform
-x_value_list = [(0, 0)] * (n + 1)   # Initialize a list to store the x values, with the first element as (0, 0) # The list will store tuples of (iteration, x value)
-x_value_list[0] = (0, float(input("x0 = "))) # x0 is the initial value (0 < x0 < 1)
+import numpy as np # Import the numpy library for numerical operations
 
-for counter in range(1, n + 1): # Iterate from 1 to n
-    xn = r * x_value_list[counter - 1][1] * (1 - x_value_list[counter - 1][1]) # Calculate the next x value using the logistic map formula
-    x_value_list[counter] = (counter, xn) # Store the iteration number and the x value in the list
+r_values = [x * 0.01 + 2.5 for x in range(0, 150)]  # range of r values
+n = 1000  # Number of iterations
+last_n = 100  # Number of iterations to display for each r
 
-iterations = [item[0] for item in x_value_list] # Extract the iteration numbers from the list
-x_values = [item[1] for item in x_value_list] # Extract the x values from the list
-plt.plot(iterations, x_values, label="Trajektoria") # Plot the x values against the iterations
+plt.figure(dpi=300)  # Set the figure resolution to 300 dpi
+for r in r_values: # Loop through each r value
+    x_value_list = [(0, 0)] * (n + 1) # Initialize a list to store x values
+    x_value_list[0] = (0, 0.5)  # Let's start with x0 = 0.5
 
-plt.title("Chaotic behavior of the logistic map") # Set the title of the plot
-plt.xlabel("Iteration") # Set the x-axis label
-plt.ylabel("x") # Set the y-axis label
-plt.legend() # Show the legend for the plot
-plt.grid() # Show the grid on the plot
-plt.show() # Display the plot
+    for counter in range(1, n + 1): # Loop through the iterations
+        xn = r * x_value_list[counter - 1][1] * (1 - x_value_list[counter - 1][1]) # Logistic map equation
+        x_value_list[counter] = (counter, xn) # Store the current iteration and x value
 
+    # Only plot the last few iterations for each r value
+    for i in range(n - last_n, n): # Loop through the last n iterations
+        plt.plot(r, x_value_list[i][1], 'o', color='black', alpha=0.25, markersize=1.25) # Plot the points
+
+major_ticks_x = np.arange(2.5, 4.0, 0.1)  # Range x from 2.5 to 4.0, step 0.1
+major_ticks_y = np.arange(0, 1.1, 0.1)    # Range y from 0 to 1.1, step 0.1
+
+# Set the major ticks for x and y axes
+plt.xticks(major_ticks_x, fontsize=10) 
+plt.yticks(major_ticks_y, fontsize=10)
+plt.minorticks_on()  # show minor ticks
+plt.grid(which='both', linestyle='--', linewidth=0.5)  # Add grid lines for both major and minor ticks
+
+plt.title("Bifurcation Diagram of the Logistic Map") 
+plt.xlabel("r value")
+plt.ylabel("x")
+plt.show()
 
 
